@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="App" style={{padding: 50, color:'red'}} >
         <h1>{gift || '毎日勉強して頑張りましょう'}</h1>
-        <button onClick={handlerSetgid} >ボタン</button>
+        <button onClick={handlerSetgid} >ボタンをなおす</button>
     </div>
   );
 }
