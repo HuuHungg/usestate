@@ -1,25 +1,61 @@
 import {useState} from 'react'
-let gifts = [
-  '毎日８時間ぐらいITを勉強してる',
-  '毎日２時間ぐらい英語を勉強してる',
-  '毎日２時間ぐらい日本語を勉強してる'
-  
+
+// Response from API
+
+let courses = [
+  {
+    id:1,
+    name: 'html,css'
+  },
+  {
+    id:2,
+    name: 'Javascript'
+  },
+  {
+    id:3,
+    name: 'ReactJS'
+  }
 ]
 
-function App() {  
-  let [gift, setGift] = useState()
 
-  let handlerSetgid = () => {
-    let ranDom = Math.floor(Math.random() * gifts.length)
-    setGift(gifts[ranDom])
+
+function App() {
+
+    let [job, setJob] = useState('') 
+    let [jobs, setJobs] = useState(() => {
+       let storageJobs = JSON.parse(localStorage.getItem('jobs'))
+       return storageJobs
+    })
+
+  let handleSubmit = () => {
+      setJobs(prev => {
+        let newJobs = [...prev,job]
+
+        // Save to local storage
+        let jsonJobs = JSON.stringify(newJobs)
+        localStorage.setItem('jobs',jsonJobs)
+          
+        return newJobs
+      })
+      setJob('')
   }
 
   return (
-    <div className="App" style={{padding: 50, color:'red'}} >
-        <h1>{gift || '毎日勉強して頑張りましょう'}</h1>
-        <button onClick={handlerSetgid} >ボタンをなおす</button>
-    </div>
-  );
+      <div style={{padding: 50}}>
+        <input 
+          value={job}
+          onChange={e => setJob(e.target.value)}
+        />
+           <button onClick={handleSubmit}>Add</button>
+
+        <ul>
+            
+            {jobs.map((job,index) => (
+                <li key={index}>{job}</li>
+            ))}
+        </ul>
+      </div>
+   )
 }
 
 export default App;
