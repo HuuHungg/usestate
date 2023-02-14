@@ -1,61 +1,29 @@
 import {useState} from 'react'
-
-// Response from API
-
-let courses = [
-  {
-    id:1,
-    name: 'html,css'
-  },
-  {
-    id:2,
-    name: 'Javascript'
-  },
-  {
-    id:3,
-    name: 'ReactJS'
-  }
-]
-
+import Content from './Content'
 
 
 function App() {
+    const  [count, setCount] = useState(0)
+    const  [count2, setCount2] = useState(0)
+  
+    const increase = () => {
+      setCount(count + 1)
+    }
 
-    let [job, setJob] = useState('') 
-    let [jobs, setJobs] = useState(() => {
-       let storageJobs = JSON.parse(localStorage.getItem('jobs'))
-       return storageJobs
-    })
+    const increase2 = () => {
+      setCount2(count2 + 1)
+    }
 
-  let handleSubmit = () => {
-      setJobs(prev => {
-        let newJobs = [...prev,job]
-
-        // Save to local storage
-        let jsonJobs = JSON.stringify(newJobs)
-        localStorage.setItem('jobs',jsonJobs)
-          
-        return newJobs
-      })
-      setJob('')
-  }
-
-  return (
-      <div style={{padding: 50}}>
-        <input 
-          value={job}
-          onChange={e => setJob(e.target.value)}
-        />
-           <button onClick={handleSubmit}>Add</button>
-
-        <ul>
-            
-            {jobs.map((job,index) => (
-                <li key={index}>{job}</li>
-            ))}
-        </ul>
+    return (
+      <div style={{padding: '10px 32px'}}>
+            <Content count={count} />
+            <h1>{count}</h1>
+            <h1>{count2}</h1>
+            <button onClick={increase}>Click me!</button>
+            <button onClick={increase2}>Click me!</button>
       </div>
-   )
+    ) 
+      
 }
 
 export default App;
