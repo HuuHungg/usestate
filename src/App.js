@@ -1,68 +1,63 @@
-import {useState, useMemo, useRef } from 'react'
+import {useState, useReducer } from 'react' 
+// use Reducer giải quyết đượcc cái gì thì useState cũng giải quyết được cái đó
 
- function App() {
-   
-    let [name, setName] = useState('')
-    let [price, setPrice] = useState('')
-    let [products, setProducts] = useState ([])
+// useState
+// 1. Init state: 0
+// 2. Actions: Up(state + 1) / Down (state -1)
 
-    const nameRef = useRef()
+// useReducer
+// 1. Init state: 0
+// 2. Actions: Up(state + 1) /Down (state -1)
+// 3. Reducer
+// 4. Dispatch
 
-    let handleSubmit = () => {
-        setProducts([...products, {
-              name,
-              price: + price
-        }]) 
+// Init State
+let initState = 0
 
-        setName('')
-        setPrice('')
-        nameRef.current.focus()
-    }
+// Action
+const Up_ACTION = 'up'
+const DOWN_ACTION = 'down'
 
-    const total = useMemo(() => {
-        let result = products.reduce((result, prod) => {
-            console.log('Tinh Toan Lai...')
-            return result + prod.price
-        },0)
+// Reducer 
+// Dựa vào action để trả ra state mới
+// Return ra state mới
+let reducer = (state, action) => {
+    console.log('reducer running...')
+    switch(action) {
+        case Up_ACTION:
+            return state + 2
+        case DOWN_ACTION:
+            return state - 2
+        default:
+            throw new Error('Invalid action')
 
-        return result
-
-    }, [products])
-
-    
-    return (
-      <div style={{padding: '10px 32px'}}>
-            <input 
-              ref={nameRef}
-              value={name}
-              placeholder= "Enter name..."
-              onChange={e => setName(e.target.value)}
-            />
-            <br/>
-            <input 
-              value={price}
-              placeholder = "Enter price..."
-              onChange={e => setPrice(e.target.value)}
-            />
-            <br/>
-            <button onClick= {handleSubmit}>Add</button>
-            <br />
-            Total: {total}
-            <ul>
-                {products.map((product, index) => (
-                    <li key={index}> {product.name} - {product.price} </li>
-                ))}
-
-            </ul>
-
-      </div>
-    ) 
-      
+  }
 }
 
-export default App;
-  
 
 
+function App() {  
+  const [count, dispatch] = useReducer(reducer,initState)
 
+  return (
+    <div style={{padding: '0 20px'}}>
+         <h1>{count}</h1>
+        <button
+          onClick={() => dispatch(DOWN_ACTION)}
+        >
+          Down
+        </button>
+
+        <button
+          onClick={() => dispatch(Up_ACTION)}
+        >
+          Up
+          </button>
+    </div>
+  )
+    
+        
+}
+
+export default App
 
